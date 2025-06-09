@@ -16,7 +16,7 @@ public class TableControllers {
     @Autowired
     private TableService service;
 
-    @GetMapping("user/table/list")
+    @GetMapping("/manager/table/list")
     public List<TableResponse> allTables() {
 
         List<Tables> tablesList = service.findAll();
@@ -52,7 +52,7 @@ public class TableControllers {
         return tableDTOs;
     }
 
-    @GetMapping("user/table/{id}")
+    @GetMapping("/manager/table/{id}")
     public TableResponse findById(@PathVariable int id) {
 
         Tables tables = service.findById(id);

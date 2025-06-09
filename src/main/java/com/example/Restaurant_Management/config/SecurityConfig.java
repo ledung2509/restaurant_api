@@ -32,12 +32,24 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/login")
+                        .requestMatchers("/api/auth/guest/login")
                         .permitAll()
-                        .requestMatchers("/api/auth/register")
+                        .requestMatchers("/api/auth/guest/register")
                         .permitAll()
-                        .requestMatchers("/api/user/**")
+                        .requestMatchers("api/guest/**")
                         .permitAll()
+                        .requestMatchers("/api/customer/**")
+                        .hasRole("CUSTOMER")
+                        .requestMatchers("api/manager/**")
+                        .hasRole("MANAGER")
+                        .requestMatchers("api/admin/**")
+                        .hasRole("ADMIN")
+
+                        // Cho phép truy cập không cần login vào file chat.html và các file static khác
+                        .requestMatchers("/chat.html", "/js/**", "/css/**", "/images/**").permitAll()
+                        // Cho phép truy cập WebSocket endpoint
+                        .requestMatchers("/ws/**").permitAll()
+
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session

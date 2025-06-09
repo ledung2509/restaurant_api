@@ -18,7 +18,7 @@ public class ReservationControllers {
     @Autowired
     private ReservationService service;
 
-    @PostMapping("/user/reservation/booking")
+    @PostMapping("/customer/reservation/booking")
     public ResponseEntity<?> bookingTable(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ReservationRequest request){
 
         String rs = service.BookingTable(userDetails.getUsername(), request);

@@ -19,7 +19,8 @@ public class CartControllers {
     @Autowired
     private CartService service;
 
-    @PostMapping("/user/cart/add-to-cart")
+    //Thêm sản phẩm vào trong giỏ hàng
+    @PostMapping("/customer/cart/add-to-cart")
     public ResponseEntity<?> addCart(@RequestBody CartItems cartItems, Authentication auth) {
 
         String email = String.valueOf(auth.getName());
@@ -28,7 +29,7 @@ public class CartControllers {
         return ResponseEntity.ok("Added to cart successfully: " + cartItems);
     }
 
-    @GetMapping("/user/cart/view-cart")
+    @GetMapping("/customer/cart/view-cart")
     public ResponseEntity<?> viewCart(Authentication auth) {
         List<CartItems> cartItems = service.getCart();
         if (cartItems.size() == 0) {
@@ -44,13 +45,13 @@ public class CartControllers {
         return ResponseEntity.ok(resp);
     }
 
-    @GetMapping("/user/cart/user-id")
+    @GetMapping("/customer/cart/customer-id")
     public ResponseEntity<?> userId(Authentication auth) {
         int userdId = service.getUserId(auth.getName());
         return ResponseEntity.ok(userdId);
     }
 
-    @PutMapping("/user/cart/update-cart/{id}")
+    @PutMapping("/customer/cart/update-cart/{id}")
     public ResponseEntity<?> updateCart(@PathVariable int id,@RequestBody CartItems cartItems) {
         if (cartItems.getQuantity() <= 0) {
             service.deleteCart(12);
@@ -60,18 +61,18 @@ public class CartControllers {
         return ResponseEntity.ok("Updated cart successfully");
     }
 
-    @GetMapping("/user/cart/detail-cart/{id}")
+    @GetMapping("/customer/cart/detail-cart/{id}")
     public ResponseEntity<?> getDetailCart(@PathVariable int id) {
         return ResponseEntity.ok(service.getCartItems(id));
     }
 
-    @DeleteMapping("/user/cart/delete-cart/{id}")
+    @DeleteMapping("/customer/cart/delete-cart/{id}")
     public ResponseEntity<?> deleteCart(@PathVariable int id) {
         service.deleteCart(id);
         return ResponseEntity.ok("Delete cart successfully");
     }
 
-    @DeleteMapping("/user/cart/clear-cart")
+    @DeleteMapping("/customer/cart/clear-cart")
     public ResponseEntity<?> clearCart(Authentication auth) {
         String userId = String.valueOf(service.getUserId(auth.getName()));
         service.clearCart(userId);

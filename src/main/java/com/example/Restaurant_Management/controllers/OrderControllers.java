@@ -18,13 +18,13 @@ public class OrderControllers {
     @Autowired
     private OrderService service;
 
-    @PostMapping("/user/checkout")
+    @PostMapping("/customer/order/checkout")
     public ResponseEntity<?> checkout(){
         service.processOrder();
         return ResponseEntity.ok("Checkout successful");
     }
 
-    @GetMapping("/user/order/view_order")
+    @GetMapping("/customer/order/view_order")
     public CheckoutResponse viewOrder(){
         return service.viewOrder();
     }

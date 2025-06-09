@@ -18,12 +18,12 @@ public class MenuControllers {
     @Autowired
     private MenuService service;
 
-    @GetMapping("/user/menu_item/list")
+    @GetMapping("/guest/menu_item/list")
     public List<MenuResponse> MenuCotroller(){
         return service.getMenuItems();
     }
 
-    @GetMapping("/user/menu_item/{id}")
+    @GetMapping("/guest/menu_item/{id}")
     public MenuResponse findById(@PathVariable int id) {
         return service.getMenuItem(id);
     }

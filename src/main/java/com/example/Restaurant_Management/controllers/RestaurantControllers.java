@@ -5,7 +5,9 @@ import com.example.Restaurant_Management.models.Restaurant;
 import com.example.Restaurant_Management.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class RestaurantControllers {
     @Autowired
     private RestaurantService service;
 
-    @GetMapping("/user/restaurant/list")
+    @GetMapping("/manager/restaurant/list")
     public List<RestaurantResponse> getAllRestaurants(){
 
         List<Restaurant> restaurants= service.findAll();
@@ -44,5 +46,10 @@ public class RestaurantControllers {
         }
 
         return restaurantDTOs;
+    }
+
+    @GetMapping("/manager/restaurant/{id}")
+    public RestaurantResponse getRestaurantById(@PathVariable int id){
+        return service.findById(id);
     }
 }

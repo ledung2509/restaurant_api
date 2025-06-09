@@ -20,7 +20,7 @@ public class AuthControllers {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/register")
+    @PostMapping("/guest/register")
     public ResponseEntity<?> registerUsers(@RequestBody Users user){
         try{
             Users users = service.registerUser(user);
@@ -31,7 +31,7 @@ public class AuthControllers {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/guest/login")
     public ResponseEntity<?> loginUsers(@RequestBody Users user){
 
         String rs = service.loginUser(user);
