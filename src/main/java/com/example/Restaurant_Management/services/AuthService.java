@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -26,6 +27,7 @@ public class AuthService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
+    @Transactional
     public Users registerUser(Users user){
 
         if((repositories.findByEmail(user.getEmail())).isPresent()){
@@ -38,6 +40,7 @@ public class AuthService {
         return repositories.save(user);
     }
 
+    @Transactional
     public String loginUser(Users users){
         try {
             Authentication authentication = manager.authenticate(

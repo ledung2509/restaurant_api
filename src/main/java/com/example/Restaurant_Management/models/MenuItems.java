@@ -39,6 +39,9 @@ public class MenuItems {
     @OneToMany(mappedBy = "item")
     private List<CartDetails> details;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     public MenuItems(int id) {
         this.id = id;
     }

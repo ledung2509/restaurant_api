@@ -1,5 +1,6 @@
 package com.example.Restaurant_Management.controllers;
 
+import com.example.Restaurant_Management.dto.response.MenuResponse;
 import com.example.Restaurant_Management.models.MenuItems;
 import com.example.Restaurant_Management.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ public class MenuControllers {
     private MenuService service;
 
     @GetMapping("/user/menu_item/list")
-    public List<MenuItems> MenuCotroller(){
+    public List<MenuResponse> MenuCotroller(){
         return service.getMenuItems();
     }
 
     @GetMapping("/user/menu_item/{id}")
-    public MenuItems findById(@PathVariable int id) {
+    public MenuResponse findById(@PathVariable int id) {
         return service.getMenuItem(id);
     }
 }

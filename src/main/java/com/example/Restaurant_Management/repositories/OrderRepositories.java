@@ -1,23 +1,30 @@
 package com.example.Restaurant_Management.repositories;
 
+import com.example.Restaurant_Management.dto.response.CheckoutResponse;
+import com.example.Restaurant_Management.dto.response.OrderResponse;
 import com.example.Restaurant_Management.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class OrderRepositories {
@@ -128,14 +135,47 @@ public class OrderRepositories {
                 }
             }
         }
-
         //jdbcTemplate.update(sql, user_id, status,carts.getCreatedAt());
 
         redisTemplate.delete(String.valueOf(getUserById()));
     }
 
-    public void viewCheckout(){
-        String sql = "select * from restaurant_management.carts where user_id=?";
-        
+    public CheckoutResponse viewCheckout(){
+
+        List<OrderResponse> orders = new ArrayList<>();
+
+        String sql = "select a.user_id,p.name,b.quantity,b.price,a.created_at from \n" +
+                "restaurant_management.carts as a inner join restaurant_management.cart_detail as b \n" +
+                "on a.id = b.cart_id inner join restaurant_management.menu_items as p\n" +
+                "on b.product_id = p.menu_id\n" +
+                "where a.user_id=?";
+
+        try{
+            Connection connection = jdbcTemplate.getDataSource().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, getUserById());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                OrderResponse order = new OrderResponse();
+                order.setProductName(rs.getString("p.name"));
+                order.setQuantity(rs.getInt("b.quantity"));
+                order.setPrice(rs.getDouble("b.price"));
+                order.setCreatedAt(rs.getString("a.created_at"));
+                orders.add(order);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        CheckoutResponse response = new CheckoutResponse();
+        response.setOrders(orders);
+        double total_price = 0;
+        for (OrderResponse order : orders) {
+            total_price += order.getPrice();
+        }
+        response.setTotal_price(total_price);
+        response.setUser_id(getUserById());
+
+        return response;
     }
 }

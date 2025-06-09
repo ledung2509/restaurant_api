@@ -119,4 +119,10 @@ public class ReservationService {
 
         return "Đặt bàn thành công.Vui lòng kiểm tra lại!!!";
     }
+
+
+    //Xem thông tin đặt bàn của khách hàng
+    public void viewBookTable() {
+        
+    }
 }
