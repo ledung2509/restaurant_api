@@ -4,6 +4,8 @@ import lombok.*;
 
 import java.io.Serializable;
 
+
+//Entity dùng để lưu thông tin giỏ hàng
 @Data
 @Getter
 @Setter

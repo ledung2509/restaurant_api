@@ -1,7 +1,5 @@
 package com.example.Restaurant_Management.services;
 
-
-import com.example.Restaurant_Management.dto.response.UsersResponse;
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.repositories.UserRepositories;
 import org.springframework.beans.factory.annotation.Autowired;

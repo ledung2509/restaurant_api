@@ -1,5 +1,6 @@
 package com.example.Restaurant_Management.services;
 
+import com.example.Restaurant_Management.dto.response.CheckoutResponse;
 import com.example.Restaurant_Management.repositories.OrderDetailRepositories;
 import com.example.Restaurant_Management.repositories.OrderRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,9 @@ public class OrderService {
 
     public void processOrder(){
         orderRepositories.checkOut();
+    }
+
+    public CheckoutResponse viewOrder(){
+        return orderRepositories.viewCheckout();
     }
 }

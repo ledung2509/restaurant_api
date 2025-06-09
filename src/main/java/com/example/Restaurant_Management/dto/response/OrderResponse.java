@@ -13,6 +13,4 @@ public class OrderResponse {
     private int quantity;
     private double price;
     private String createdAt;
-    private String status;
-    private String restaurantName;
 }

@@ -1,5 +1,6 @@
 package com.example.Restaurant_Management.repositories;
 
+import com.example.Restaurant_Management.dto.response.MenuResponse;
 import com.example.Restaurant_Management.models.CartItems;
 import com.example.Restaurant_Management.models.MenuItems;
 import com.example.Restaurant_Management.models.Users;
@@ -37,14 +38,14 @@ public class CartRepositories {
         userId = getUserById();
 
         //Lấy thông tin sản phẩm trong menu
-        MenuItems menu = menuService.getMenuItem(cart.getProductId());
+        MenuResponse menu = menuService.getMenuItem(cart.getProductId());
 
         //Lấy thông tin sản phẩm có trong giỏ hàng
         CartItems itemsExsisting = ops.get(userId, String.valueOf(cart.getProductId()));
 
         double totalPrice = Math.round(menu.getPrice() * cart.getQuantity() * 100.0) / 100.0;
 
-        String productName = menu.getName();
+        String productName = menu.getMenuName();
 
         //Chưa có thông tin ở trong giỏ hàng
         if (itemsExsisting == null) {
@@ -100,13 +101,13 @@ public class CartRepositories {
 
         CartItems cartExsisting = ops.get(getUserById(), String.valueOf(productId));
 
-        MenuItems menu = menuService.getMenuItem(productId);
+        MenuResponse menu = menuService.getMenuItem(productId);
 
         double totalPrice = Math.round(menu.getPrice() * cart.getQuantity() * 100.0) / 100.0;
 
         //Cập nhật thông tin giỏ hàng
         cartExsisting.setProductId(productId);
-        cartExsisting.setProductName(menu.getName());
+        cartExsisting.setProductName(menu.getMenuName());
         cartExsisting.setQuantity(cart.getQuantity());
         cartExsisting.setPrice(totalPrice);
 
