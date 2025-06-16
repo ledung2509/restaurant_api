@@ -44,12 +44,10 @@ public class SecurityConfig {
                         .hasRole("MANAGER")
                         .requestMatchers("api/admin/**")
                         .hasRole("ADMIN")
-
                         // Cho phép truy cập không cần login vào file chat.html và các file static khác
                         .requestMatchers("/chat.html", "/js/**", "/css/**", "/images/**").permitAll()
                         // Cho phép truy cập WebSocket endpoint
                         .requestMatchers("/ws/**").permitAll()
-
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(session -> session

@@ -4,6 +4,7 @@ import com.example.Restaurant_Management.dto.response.TableResponse;
 import com.example.Restaurant_Management.models.Tables;
 import com.example.Restaurant_Management.services.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class TableControllers {
     private TableService service;
 
     @GetMapping("/manager/table/list")
+    @PreAuthorize("hasRole('MANAGER')")
     public List<TableResponse> allTables() {
 
         List<Tables> tablesList = service.findAll();
@@ -53,6 +55,7 @@ public class TableControllers {
     }
 
     @GetMapping("/manager/table/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public TableResponse findById(@PathVariable int id) {
 
         Tables tables = service.findById(id);

@@ -4,6 +4,7 @@ import com.example.Restaurant_Management.dto.response.RestaurantResponse;
 import com.example.Restaurant_Management.models.Restaurant;
 import com.example.Restaurant_Management.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class RestaurantControllers {
     private RestaurantService service;
 
     @GetMapping("/manager/restaurant/list")
+    @PreAuthorize("hasRole('MANAGER')")
     public List<RestaurantResponse> getAllRestaurants(){
 
         List<Restaurant> restaurants= service.findAll();
@@ -49,7 +51,14 @@ public class RestaurantControllers {
     }
 
     @GetMapping("/manager/restaurant/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public RestaurantResponse getRestaurantById(@PathVariable int id){
         return service.findById(id);
+    }
+
+    @GetMapping("/guest/restaurant/search")
+    public List<RestaurantResponse> searchRestaurantByName(@RequestParam("name") String name){
+        List<RestaurantResponse> list = service.searchByName(name);
+        return list;
     }
 }

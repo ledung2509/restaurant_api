@@ -21,7 +21,7 @@ public class MenuService {
 
         List<MenuItems> responses = repositories.findAll();
         List<MenuResponse> menuDTO = new ArrayList<>();
-        for (MenuItems items : responses){
+        for (MenuItems items : responses) {
             MenuResponse menu = new MenuResponse();
 
             menu.setMenuId(items.getId());
@@ -50,5 +50,25 @@ public class MenuService {
         menu.setRestaurantName(item.getRestaurant().getName());
 
         return menu;
+    }
+
+    public List<MenuResponse> searchMenuItem(String name) {
+
+        List<MenuResponse> resp = new ArrayList<>();
+        List<MenuItems> item = repositories.searchByMenu(name);
+        for (MenuItems items : item) {
+            MenuResponse menu = new MenuResponse();
+
+            menu.setMenuId(items.getId());
+            menu.setMenuName(items.getName());
+            menu.setDescription(items.getDescription());
+            menu.setPrice(items.getPrice());
+            menu.setCategoryName(items.getCategory().getName());
+            menu.setRestaurantName(items.getRestaurant().getName());
+
+            resp.add(menu);
+        }
+
+        return resp;
     }
 }

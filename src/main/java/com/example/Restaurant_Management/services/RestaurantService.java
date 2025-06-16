@@ -6,6 +6,7 @@ import com.example.Restaurant_Management.repositories.RestaurantRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,5 +33,25 @@ public class RestaurantService {
         response.setManagerFullName(restaurant.getManager().getFullname());
 
         return response;
+    }
+
+    public List<RestaurantResponse> searchByName(String name){
+        List<RestaurantResponse> resp = new ArrayList<>();
+        List<Restaurant> res = repositories.searchByName(name);
+
+        for(Restaurant r : res){
+            RestaurantResponse response = new RestaurantResponse();
+            response.setId(r.getId());
+            response.setName(r.getName());
+            response.setAddress(r.getAddress());
+            response.setPhone(r.getPhone());
+            response.setOpenTime(r.getOpenTime());
+            response.setCloseTime(r.getCloseTime());
+            response.setDescription(r.getDescription());
+            response.setManagerFullName(r.getManager().getFullname());
+            resp.add(response);
+        }
+
+        return resp;
     }
 }
