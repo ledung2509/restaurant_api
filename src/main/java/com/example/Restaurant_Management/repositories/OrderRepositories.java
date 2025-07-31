@@ -1,20 +1,22 @@
 package com.example.Restaurant_Management.repositories;
 
 import com.example.Restaurant_Management.dto.response.CheckoutResponse;
+import com.example.Restaurant_Management.dto.response.OrderDetailResponse;
 import com.example.Restaurant_Management.dto.response.OrderResponse;
-import com.example.Restaurant_Management.models.*;
+import com.example.Restaurant_Management.models.CartDetails;
+import com.example.Restaurant_Management.models.CartItems;
+import com.example.Restaurant_Management.models.Carts;
+import com.example.Restaurant_Management.models.MenuItems;
+import com.example.Restaurant_Management.models.Users;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class OrderRepositories {
@@ -70,7 +71,7 @@ public class OrderRepositories {
         carts.setUser(new Users(getUserById()));
         int user_id = carts.getUser().getId();
 
-        carts.setStatus(Carts.Status.completed);
+        carts.setStatus(Carts.Status.active);
 
         String status = carts.getStatus().name();
 
@@ -138,6 +139,31 @@ public class OrderRepositories {
         //jdbcTemplate.update(sql, user_id, status,carts.getCreatedAt());
 
         redisTemplate.delete(String.valueOf(getUserById()));
+    }
+
+    public void viewOrderCustomer(){
+
+        List<OrderDetailResponse> responses = new ArrayList<>();
+
+        String sql = "select a.user_id,p.name,b.quantity,b.price,a.status,a.created_at from \n" +
+                "restaurant_management.carts as a inner join restaurant_management.cart_detail as b \n" +
+                "on a.id = b.cart_id inner join restaurant_management.menu_items as p\n" +
+                "on b.product_id = p.menu_id;";
+        try{
+
+            Connection connection = jdbcTemplate.getDataSource().getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                OrderDetailResponse orderDetailResponse = new OrderDetailResponse();
+
+                responses.add(orderDetailResponse);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public CheckoutResponse viewCheckout(){

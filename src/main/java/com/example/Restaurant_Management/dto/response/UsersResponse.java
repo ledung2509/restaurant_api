@@ -1,9 +1,10 @@
 package com.example.Restaurant_Management.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor

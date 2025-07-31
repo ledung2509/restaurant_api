@@ -4,7 +4,6 @@ import com.example.Restaurant_Management.dto.request.ReservationRequest;
 import com.example.Restaurant_Management.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +19,7 @@ public class ReservationControllers {
     private ReservationService service;
 
     @PostMapping("/customer/reservation/booking")
-    public ResponseEntity<?> bookingTable(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ReservationRequest request){
+    public ResponseEntity<?> bookingTable(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ReservationRequest request) {
 
         String rs = service.BookingTable(userDetails.getUsername(), request);
 

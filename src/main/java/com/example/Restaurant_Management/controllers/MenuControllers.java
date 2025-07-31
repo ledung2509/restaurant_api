@@ -1,7 +1,6 @@
 package com.example.Restaurant_Management.controllers;
 
 import com.example.Restaurant_Management.dto.response.MenuResponse;
-import com.example.Restaurant_Management.models.MenuItems;
 import com.example.Restaurant_Management.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,7 @@ public class MenuControllers {
     private MenuService service;
 
     @GetMapping("/guest/menu_item/list")
-    public List<MenuResponse> MenuCotroller(){
+    public List<MenuResponse> MenuCotroller() {
         return service.getMenuItems();
     }
 

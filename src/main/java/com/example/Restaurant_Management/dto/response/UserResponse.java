@@ -1,8 +1,6 @@
 package com.example.Restaurant_Management.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class UserResponse {
@@ -43,7 +41,7 @@ public class UserResponse {
 
     @Override
     public String toString() {
-        return "UserResponse{" +"\n"+
+        return "UserResponse{" + "\n" +
                 "id=" + id + ",\n" +
                 "fullname='" + fullname + '\'' + ",\n" +
                 "token='" + token + '\'' + '\n' +

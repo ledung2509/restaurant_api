@@ -1,7 +1,6 @@
 package com.example.Restaurant_Management.controllers;
 
 import com.example.Restaurant_Management.dto.response.CategoryResponse;
-import com.example.Restaurant_Management.models.Category;
 import com.example.Restaurant_Management.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

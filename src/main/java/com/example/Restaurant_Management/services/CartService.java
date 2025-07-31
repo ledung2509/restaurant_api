@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CartService {
@@ -39,8 +38,8 @@ public class CartService {
         return repositories.getCart();
     }
 
-    public void updateCart(int productId,CartItems cartItems) {
-        repositories.updateCart(productId,cartItems);
+    public void updateCart(int productId, CartItems cartItems) {
+        repositories.updateCart(productId, cartItems);
     }
 
     public void deleteCart(int productId) {
