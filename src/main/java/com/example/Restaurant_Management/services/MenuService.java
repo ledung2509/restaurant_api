@@ -3,18 +3,28 @@ package com.example.Restaurant_Management.services;
 import com.example.Restaurant_Management.dto.response.MenuResponse;
 import com.example.Restaurant_Management.models.MenuItems;
 import com.example.Restaurant_Management.repositories.MenuItemRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MenuService {
 
-    @Autowired
-    private MenuItemRepositories repositories;
+    private final MenuItemRepositories repositories;
 
+    private MenuResponse mapToMenuResponse(MenuItems items) {
+        MenuResponse menu = new MenuResponse();
+        menu.setMenuId(items.getId());
+        menu.setMenuName(items.getName());
+        menu.setDescription(items.getDescription());
+        menu.setPrice(items.getPrice());
+        menu.setCategoryName(items.getCategory().getName());
+        menu.setRestaurantName(items.getRestaurant().getName());
+        return menu;
+    }
 
     public List<MenuResponse> getMenuItems() {
 
@@ -22,16 +32,7 @@ public class MenuService {
         List<MenuItems> responses = repositories.findAll();
         List<MenuResponse> menuDTO = new ArrayList<>();
         for (MenuItems items : responses) {
-            MenuResponse menu = new MenuResponse();
-
-            menu.setMenuId(items.getId());
-            menu.setMenuName(items.getName());
-            menu.setDescription(items.getDescription());
-            menu.setPrice(items.getPrice());
-            menu.setCategoryName(items.getCategory().getName());
-            menu.setRestaurantName(items.getRestaurant().getName());
-
-            menuDTO.add(menu);
+            menuDTO.add(mapToMenuResponse(items));
         }
 
         return menuDTO;
@@ -39,17 +40,9 @@ public class MenuService {
 
     public MenuResponse getMenuItem(int id) {
 
-        MenuItems item = repositories.findById(id).get();
-        MenuResponse menu = new MenuResponse();
-
-        menu.setMenuId(item.getId());
-        menu.setMenuName(item.getName());
-        menu.setDescription(item.getDescription());
-        menu.setPrice(item.getPrice());
-        menu.setCategoryName(item.getCategory().getName());
-        menu.setRestaurantName(item.getRestaurant().getName());
-
-        return menu;
+        MenuItems item = repositories.findById(id)
+                .orElseThrow(() -> new RuntimeException("Menu item not found with id: " + id));
+        return mapToMenuResponse(item);
     }
 
     public List<MenuResponse> searchMenuItem(String name) {
@@ -57,18 +50,8 @@ public class MenuService {
         List<MenuResponse> resp = new ArrayList<>();
         List<MenuItems> item = repositories.searchByMenu(name);
         for (MenuItems items : item) {
-            MenuResponse menu = new MenuResponse();
-
-            menu.setMenuId(items.getId());
-            menu.setMenuName(items.getName());
-            menu.setDescription(items.getDescription());
-            menu.setPrice(items.getPrice());
-            menu.setCategoryName(items.getCategory().getName());
-            menu.setRestaurantName(items.getRestaurant().getName());
-
-            resp.add(menu);
+            resp.add(mapToMenuResponse(items));
         }
-
         return resp;
     }
 }

@@ -2,7 +2,6 @@ package com.example.Restaurant_Management.repositories;
 
 import com.example.Restaurant_Management.dto.response.MenuResponse;
 import com.example.Restaurant_Management.models.CartItems;
-import com.example.Restaurant_Management.models.MenuItems;
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.services.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.lang.Math.round;
 
 @Repository
 public class CartRepositories {
@@ -41,14 +37,14 @@ public class CartRepositories {
         MenuResponse menu = menuService.getMenuItem(cart.getProductId());
 
         //Lấy thông tin sản phẩm có trong giỏ hàng
-        CartItems itemsExsisting = ops.get(userId, String.valueOf(cart.getProductId()));
+        CartItems itemsExisting = ops.get(userId, String.valueOf(cart.getProductId()));
 
         double totalPrice = Math.round(menu.getPrice() * cart.getQuantity() * 100.0) / 100.0;
 
         String productName = menu.getMenuName();
 
         //Chưa có thông tin ở trong giỏ hàng
-        if (itemsExsisting == null) {
+        if (itemsExisting == null) {
             cart.setPrice(totalPrice);
             cart.setProductName(productName);
 
@@ -58,19 +54,19 @@ public class CartRepositories {
         }
         //Thông tin đó đã tồn tại trong giỏ hàng
         else {
-            if (itemsExsisting.getProductId() == cart.getProductId()) {
-                int quantity = itemsExsisting.getQuantity() + cart.getQuantity();
+            if (itemsExisting.getProductId() == cart.getProductId()) {
+                int quantity = itemsExisting.getQuantity() + cart.getQuantity();
 
 
-                itemsExsisting.setQuantity(quantity);
-                itemsExsisting.setPrice(Math.round(quantity * menu.getPrice() * 100.0) / 100.0);
-                //itemsExsisting.setProductName(productName);
+                itemsExisting.setQuantity(quantity);
+                itemsExisting.setPrice(Math.round(quantity * menu.getPrice() * 100.0) / 100.0);
+                //itemsExisting.setProductName(productName);
 
-                itemsExsisting = new CartItems(cart.getProductId(),
-                        itemsExsisting.getQuantity(),
-                        itemsExsisting.getPrice(), itemsExsisting.getProductName());
+                itemsExisting = new CartItems(cart.getProductId(),
+                        itemsExisting.getQuantity(),
+                        itemsExisting.getPrice(), itemsExisting.getProductName());
 
-                ops.put(userId, String.valueOf(cart.getProductId()), itemsExsisting);
+                ops.put(userId, String.valueOf(cart.getProductId()), itemsExisting);
             }
         }
     }
@@ -82,8 +78,7 @@ public class CartRepositories {
         Users users = userRepositories.findByEmail(email)
                 .orElseThrow();
 
-        String userId = String.valueOf(users.getId());
-        return userId;
+        return String.valueOf(users.getId());
     }
 
     //Xem thông tin giỏ hàng
@@ -99,19 +94,19 @@ public class CartRepositories {
     public void updateCart(int productId, CartItems cart) {
         HashOperations<String, String, CartItems> ops = redisTemplate.opsForHash();
 
-        CartItems cartExsisting = ops.get(getUserById(), String.valueOf(productId));
+        CartItems cartExisting = ops.get(getUserById(), String.valueOf(productId));
 
         MenuResponse menu = menuService.getMenuItem(productId);
 
         double totalPrice = Math.round(menu.getPrice() * cart.getQuantity() * 100.0) / 100.0;
 
         //Cập nhật thông tin giỏ hàng
-        cartExsisting.setProductId(productId);
-        cartExsisting.setProductName(menu.getMenuName());
-        cartExsisting.setQuantity(cart.getQuantity());
-        cartExsisting.setPrice(totalPrice);
+        cartExisting.setProductId(productId);
+        cartExisting.setProductName(menu.getMenuName());
+        cartExisting.setQuantity(cart.getQuantity());
+        cartExisting.setPrice(totalPrice);
 
-        ops.put(getUserById(), String.valueOf(productId), cartExsisting);
+        ops.put(getUserById(), String.valueOf(productId), cartExisting);
 
     }
 

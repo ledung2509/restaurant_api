@@ -110,11 +110,9 @@ public class ReservationService {
 
             //Lưu thông tin đặt bàn
             repositories.save(reservation);
-
         } catch (Exception exception) {
             throw new RuntimeException("Có lỗi khi đặt bàn" + exception.getMessage());
         }
-
         return "Đặt bàn thành công.Vui lòng kiểm tra lại!!!";
     }
 

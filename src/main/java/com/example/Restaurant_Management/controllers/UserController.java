@@ -40,4 +40,14 @@ public class UserController {
 
         return ResponseEntity.ok(usersResponse);
     }
+
+    @PutMapping("/user/update/profile")
+    public ResponseEntity<String> updateUserProfile(@RequestBody Users users) {
+        Users updatedUser = service.updateUserProfile(users);
+        if (updatedUser != null) {
+            return ResponseEntity.ok("Cập nhật thông tin người dùng thành công");
+        } else {
+            return ResponseEntity.badRequest().body("Cập nhật thông tin người dùng thất bại");
+        }
+    }
 }

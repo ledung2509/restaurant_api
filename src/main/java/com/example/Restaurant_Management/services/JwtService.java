@@ -17,8 +17,6 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private final String secretKey = "xQyf9DFJlClPIrmkeTMjEuE/NDF8llK922LUjl1n5/0=";
-
     public String generateToken(String username) {
 
         Map<String, Object> claims = new HashMap<>();
@@ -34,6 +32,7 @@ public class JwtService {
 
     public Key getSignKey() {
 
+        String secretKey = "xQyf9DFJlClPIrmkeTMjEuE/NDF8llK922LUjl1n5/0=";
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }

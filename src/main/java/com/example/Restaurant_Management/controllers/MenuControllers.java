@@ -2,7 +2,7 @@ package com.example.Restaurant_Management.controllers;
 
 import com.example.Restaurant_Management.dto.response.MenuResponse;
 import com.example.Restaurant_Management.services.MenuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class MenuControllers {
 
-    @Autowired
-    private MenuService service;
+    private final MenuService service;
 
     @GetMapping("/guest/menu_item/list")
-    public List<MenuResponse> MenuCotroller() {
+    public List<MenuResponse> MenuController() {
         return service.getMenuItems();
     }
 
@@ -29,9 +29,8 @@ public class MenuControllers {
     }
 
     @GetMapping("/guest/menu_item/search")
-    public List<MenuResponse> searchByNaeme(@RequestParam("name") String item) {
-        List<MenuResponse> menu = service.searchMenuItem(item);
-        return menu;
+    public List<MenuResponse> searchByName(@RequestParam("name") String item) {
+        return service.searchMenuItem(item);
     }
 
 }

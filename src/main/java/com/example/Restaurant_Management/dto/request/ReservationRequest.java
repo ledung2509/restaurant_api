@@ -1,46 +1,18 @@
 package com.example.Restaurant_Management.dto.request;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 public class ReservationRequest {
 
-    private int capcity;
+    private int capacity;
     private int restaurantID;
     private String reservationDate;
     private String reservationTime;
-
-    public String getReservationTime() {
-        return reservationTime;
-    }
-
-    public void setReservationTime(String reservationTime) {
-        this.reservationTime = reservationTime;
-    }
-
-    public int getCapcity() {
-        return capcity;
-    }
-
-    public void setCapcity(int capcity) {
-        this.capcity = capcity;
-    }
-
-    public int getRestaurantID() {
-        return restaurantID;
-    }
-
-    public void setRestaurantID(int restaurantID) {
-        this.restaurantID = restaurantID;
-    }
-
-    public String getReservationDate() {
-        return reservationDate;
-    }
-
-    public void setReservationDate(String reservationDate) {
-        this.reservationDate = reservationDate;
-    }
 }

@@ -25,15 +25,14 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Transactional
-    public Users registerUser(Users user){
+    public Users registerUser(Users user) {
 
-        if((repositories.findByEmail(user.getEmail())).isPresent()){
-            throw  new IllegalArgumentException("Email đã tồn tại!!!");
+        if ((repositories.findByEmail(user.getEmail())).isPresent()) {
+            throw new IllegalArgumentException("Email đã tồn tại!!!");
         }
-
         user.setPasswordHash(encoder.encode(user.getPasswordHash()));
         user.setRole(Role.CUSTOMER);
 
@@ -41,7 +40,7 @@ public class AuthService {
     }
 
     @Transactional
-    public String loginUser(Users users){
+    public String loginUser(Users users) {
         try {
             Authentication authentication = manager.authenticate(
                     new UsernamePasswordAuthenticationToken(users.getEmail(), users.getPasswordHash())
@@ -56,18 +55,16 @@ public class AuthService {
                     jwtService.generateToken(users.getEmail()));
 
             return "Đăng nhập thành công: \n" + response;
-        }catch (BadCredentialsException e){
-            return "Đăng nhập thất bại: Sai mật khẩu hoặc email" ;
-        }catch (Exception e) {
+        } catch (BadCredentialsException e) {
+            return "Đăng nhập thất bại: Sai mật khẩu hoặc email";
+        } catch (Exception e) {
             return "Đăng nhập thất bại: " + e.getMessage();
         }
     }
 
-    public Users findByUserName(String email){
+    public Users findByUserName(String email) {
 
-        Users user = repositories.findByEmail(email)
+        return repositories.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Email không tìm thấy"));
-
-        return user;
     }
 }

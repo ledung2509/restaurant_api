@@ -3,19 +3,18 @@ package com.example.Restaurant_Management.services;
 import com.example.Restaurant_Management.dto.response.CategoryResponse;
 import com.example.Restaurant_Management.models.Category;
 import com.example.Restaurant_Management.repositories.CategoryRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
+    private final CategoryRepositories repositories;
 
-    @Autowired
-    private CategoryRepositories repositories;
-
-    private CategoryResponse response = new CategoryResponse();
+    //private CategoryResponse response = new CategoryResponse();
 
     public List<CategoryResponse> getAllCategories() {
         List<CategoryResponse> categories = new ArrayList<>();
@@ -26,13 +25,13 @@ public class CategoryService {
             categoryResponse.setName(category.getName());
             categories.add(categoryResponse);
         }
-
         return categories;
     }
 
     public CategoryResponse getCategory(int id) {
         CategoryResponse categoryResponse = new CategoryResponse();
-        Category category = repositories.findById(id).get();
+        Category category = repositories.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
 
         categoryResponse.setId(category.getId());
         categoryResponse.setName(category.getName());

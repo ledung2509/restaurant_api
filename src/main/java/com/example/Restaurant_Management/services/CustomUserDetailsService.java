@@ -2,7 +2,7 @@ package com.example.Restaurant_Management.services;
 
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.repositories.UserRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,10 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepositories repositories;
+    private final UserRepositories repositories;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -21,7 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Người dùng không tồn tại"));
 
         return User.builder()
-
                 .username(user.getEmail())
                 .password(user.getPasswordHash())
                 .roles(user.getRole().name())

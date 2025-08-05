@@ -4,29 +4,27 @@ import com.example.Restaurant_Management.models.CartItems;
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.repositories.CartRepositories;
 import com.example.Restaurant_Management.repositories.UserRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class CartService {
 
-    @Autowired
-    private CartRepositories repositories;
+    private final CartRepositories repositories;
 
-    @Autowired
-    private UserRepositories userRepositories;
+    private final UserRepositories userRepositories;
 
     public int getUserId(String email) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         email = auth.getName();
         Users user = userRepositories.findByEmail(email).orElseThrow();
-        int userId = user.getId();
-        return userId;
+        return user.getId();
     }
 
     public void addCart(String userId, CartItems cartItems) {

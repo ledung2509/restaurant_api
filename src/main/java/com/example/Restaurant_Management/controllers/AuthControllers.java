@@ -23,8 +23,7 @@ public class AuthControllers {
     @PostMapping("/guest/register")
     public ResponseEntity<?> registerUsers(@RequestBody Users user){
         try{
-            Users users = service.registerUser(user);
-            //service.registerUser(user)
+            service.registerUser(user);
             return ResponseEntity.ok("Đăng ký thành công!!!");
         }catch (IllegalArgumentException exception){
             return ResponseEntity.badRequest().body(exception.getMessage());

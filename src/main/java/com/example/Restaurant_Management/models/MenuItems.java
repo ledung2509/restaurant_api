@@ -1,9 +1,22 @@
 package com.example.Restaurant_Management.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.awt.*;
 import java.util.List;
 
 @Table(name = "menu_items")
@@ -20,16 +33,22 @@ public class MenuItems {
     @Column(name = "menu_id")
     private int id;
 
+    @NotBlank(message = "Menu name must not be blank")
     private String name;
 
+    @NotBlank(message = "Description must not be blank")
     private String description;
 
+    @NotNull(message = "Price must not be null")
     private float price;
 
-    private  boolean isAvaiable;
+    private boolean isAvaiable;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name="restaurant_id")
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     @ManyToOne
@@ -38,9 +57,6 @@ public class MenuItems {
 
     @OneToMany(mappedBy = "item")
     private List<CartDetails> details;
-
-    @Column(name = "image_url")
-    private String imageUrl;
 
     public MenuItems(int id) {
         this.id = id;

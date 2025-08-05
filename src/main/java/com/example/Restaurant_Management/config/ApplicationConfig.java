@@ -1,5 +1,6 @@
 package com.example.Restaurant_Management.config;
 
+import com.example.Restaurant_Management.repositories.UserRepositories;
 import com.example.Restaurant_Management.services.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
+    private final UserRepositories repositories;
+
     @Bean
     public UserDetailsService userDetailsService(){
-        return new CustomUserDetailsService();
+        return new CustomUserDetailsService(repositories);
     }
 
     @Bean

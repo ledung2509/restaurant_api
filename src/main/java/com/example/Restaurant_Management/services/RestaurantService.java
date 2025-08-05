@@ -38,7 +38,6 @@ public class RestaurantService {
     public List<RestaurantResponse> searchByName(String name){
         List<RestaurantResponse> resp = new ArrayList<>();
         List<Restaurant> res = repositories.searchByName(name);
-
         for(Restaurant r : res){
             RestaurantResponse response = new RestaurantResponse();
             response.setId(r.getId());
@@ -51,7 +50,6 @@ public class RestaurantService {
             response.setManagerFullName(r.getManager().getFullname());
             resp.add(response);
         }
-
         return resp;
     }
 }

@@ -1,20 +1,30 @@
 package com.example.Restaurant_Management.models;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import com.example.Restaurant_Management.models.entity.CUDEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Users {
+public class Users extends CUDEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +32,11 @@ public class Users {
     private int id;
 
     @Column(name = "fullname", nullable = false, length = 100)
+    @NotBlank(message = "Fullname not empty")
     private String fullname;
 
     @Column(name = "email", length = 100)
+    @NotBlank(message = "Email not empty")
     private String email;
 
     @Column(name = "phone", length = 15)
@@ -36,13 +48,7 @@ public class Users {
     @Column(name = "passwordHash", length = 100)
     private String passwordHash;
 
-    @CreationTimestamp //Lấy thời gian hiện tại
-    @Column(name = "createdAt", updatable = false)
-    private Date createdAt;
-
-    private Date updateAt;
-
-    @Column(name = "role",nullable = false)
+    @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
@@ -67,7 +73,6 @@ public class Users {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", username='" + username + '\'' +
-                ", createdAt=" + createdAt +
                 ", role=" + role +
                 '}';
     }

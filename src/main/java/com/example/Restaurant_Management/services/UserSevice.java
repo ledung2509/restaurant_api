@@ -40,4 +40,16 @@ public class UserSevice {
         return userRepositories.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng"));
     }
+
+    public Users updateUserProfile(Users users) {
+        Users existingUser = userRepositories.findById(users.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng"));
+
+        existingUser.setFullname(users.getFullname());
+        existingUser.setEmail(users.getEmail());
+        existingUser.setPhone(users.getPhone());
+        existingUser.setUsername(users.getUsername());
+
+        return userRepositories.save(existingUser);
+    }
 }

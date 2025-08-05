@@ -115,25 +115,23 @@ public class OrderRepositories {
 
             MenuItems item = menuItemRepositories.findById(cartItems.getProductId()).orElseThrow();
 
-            if(item != null){
-                details.setCart(carts);
-                details.setPrice(cartItems.getPrice());
-                details.setQuantity(cartItems.getQuantity());
-                details.setItem(item);
+            details.setCart(carts);
+            details.setPrice(cartItems.getPrice());
+            details.setQuantity(cartItems.getQuantity());
+            details.setItem(item);
 
-                try{
-                    Connection connection = jdbcTemplate.getDataSource().getConnection();
-                    PreparedStatement ps = connection.prepareStatement(sql1);
+            try{
+                Connection connection = jdbcTemplate.getDataSource().getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql1);
 
-                    ps.setDouble(1, details.getPrice());
-                    ps.setInt(2, details.getQuantity());
-                    ps.setInt(3, carts.getId());
-                    ps.setInt(4,details.getItem().getId());
+                ps.setDouble(1, details.getPrice());
+                ps.setInt(2, details.getQuantity());
+                ps.setInt(3, carts.getId());
+                ps.setInt(4,details.getItem().getId());
 
-                    ps.executeUpdate();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                ps.executeUpdate();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         //jdbcTemplate.update(sql, user_id, status,carts.getCreatedAt());
