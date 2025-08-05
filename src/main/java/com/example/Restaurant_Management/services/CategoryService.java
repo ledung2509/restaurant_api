@@ -39,11 +39,11 @@ public class CategoryService {
         return categoryResponse;
     }
 
-    public Category deleteCategory(int id) {
+    public boolean deleteCategory(int id) {
         Category category = repositories.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
         repositories.delete(category);
-        return category;
+        return true;
     }
 
     public CategoryResponse createCategory(CategoryResponse categoryResponse) {
