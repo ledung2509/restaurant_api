@@ -38,4 +38,23 @@ public class CategoryService {
 
         return categoryResponse;
     }
+
+    public Category deleteCategory(int id) {
+        Category category = repositories.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        repositories.delete(category);
+        return category;
+    }
+
+    public CategoryResponse createCategory(CategoryResponse categoryResponse) {
+        Category category = new Category();
+        category.setName(categoryResponse.getName());
+        Category savedCategory = repositories.save(category);
+
+        CategoryResponse response = new CategoryResponse();
+        response.setId(savedCategory.getId());
+        response.setName(savedCategory.getName());
+
+        return response;
+    }
 }

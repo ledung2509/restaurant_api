@@ -35,10 +35,8 @@ public class RestaurantControllers {
 
         List<Restaurant> restaurants= service.findAll();
         List<RestaurantResponse> restaurantDTOs = new ArrayList<>();
-
+        RestaurantResponse dto = new RestaurantResponse();
         for (Restaurant r : restaurants ){
-
-            RestaurantResponse dto = new RestaurantResponse();
             dto.setId(r.getId());
             dto.setName(r.getName());
             dto.setAddress(r.getAddress());

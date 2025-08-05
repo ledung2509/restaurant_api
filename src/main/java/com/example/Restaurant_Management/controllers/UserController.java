@@ -2,7 +2,7 @@ package com.example.Restaurant_Management.controllers;
 
 import com.example.Restaurant_Management.dto.response.UsersResponse;
 import com.example.Restaurant_Management.models.Users;
-import com.example.Restaurant_Management.services.UserSevice;
+import com.example.Restaurant_Management.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 public class UserController {
 
     @Autowired
-    private UserSevice service;
+    private UserService service;
 
     @PostMapping("/user/user-info")
     public ResponseEntity<String> userInfo(@RequestHeader("Authorization") String authHeader) {

@@ -21,6 +21,10 @@ import java.util.List;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CartControllers {
+    //Inject CartService
+    //Sử dụng @RequiredArgsConstructor để tự động tạo constructor với các tham số là
+    //các trường final, giúp giảm boilerplate code.
+    //Điều này giúp dễ dàng quản lý các phụ thuộc và làm cho mã nguồn sạch
     private final CartService service;
 
     //Thêm sản phẩm vào trong giỏ hàng

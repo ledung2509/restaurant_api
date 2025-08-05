@@ -40,7 +40,7 @@ public class ReservationService {
     @Transactional
     public String BookingTable(String email, ReservationRequest request) {
 
-        Tables tables = tableRepositories.findById(request.getCapcity())
+        Tables tables = tableRepositories.findById(request.getCapacity())
                 .orElseThrow(() -> new RuntimeException("Bàn không tồn tại"));
 
         Users users = userRepositories.findByEmail(email)
@@ -118,7 +118,9 @@ public class ReservationService {
 
 
     //Xem thông tin đặt bàn của khách hàng
-    public void viewBookTable() {
+    public void viewBookTable() {}
 
-    }
+    public void updateStatusTable(){}
+
+
 }

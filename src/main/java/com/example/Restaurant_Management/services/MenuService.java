@@ -27,19 +27,15 @@ public class MenuService {
     }
 
     public List<MenuResponse> getMenuItems() {
-
-
         List<MenuItems> responses = repositories.findAll();
         List<MenuResponse> menuDTO = new ArrayList<>();
         for (MenuItems items : responses) {
             menuDTO.add(mapToMenuResponse(items));
         }
-
         return menuDTO;
     }
 
     public MenuResponse getMenuItem(int id) {
-
         MenuItems item = repositories.findById(id)
                 .orElseThrow(() -> new RuntimeException("Menu item not found with id: " + id));
         return mapToMenuResponse(item);

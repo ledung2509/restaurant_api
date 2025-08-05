@@ -4,7 +4,7 @@ import com.example.Restaurant_Management.dto.response.UserResponse;
 import com.example.Restaurant_Management.models.Role;
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.repositories.UserRepositories;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,21 +14,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private UserRepositories repositories;
+    //@Autowired
+    private final UserRepositories repositories;
 
-    @Autowired
-    public AuthenticationManager manager;
+    //@Autowired
+    public final AuthenticationManager manager;
 
-    @Autowired
-    private JwtService jwtService;
+    //@Autowired
+    private final JwtService jwtService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Transactional
-    public Users registerUser(Users user) {
+    public void registerUser(Users user) {
 
         if ((repositories.findByEmail(user.getEmail())).isPresent()) {
             throw new IllegalArgumentException("Email đã tồn tại!!!");
@@ -36,7 +37,7 @@ public class AuthService {
         user.setPasswordHash(encoder.encode(user.getPasswordHash()));
         user.setRole(Role.CUSTOMER);
 
-        return repositories.save(user);
+        repositories.save(user);
     }
 
     @Transactional
