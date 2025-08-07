@@ -21,4 +21,6 @@ public class TableService {
         return repositories.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bàn không tồn tại với id: " + id));
     }
+
+
 }

@@ -112,6 +112,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
 		<!-- JSON convert -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -135,6 +136,23 @@
 			<version>3.0.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Elasticsearch Starter -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>co.elastic.apm</groupId>
+			<artifactId>elastic-apm-agent</artifactId>
+			<version>1.55.0</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -1,18 +1,32 @@
 package com.example.Restaurant_Management.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.example.Restaurant_Management.models.entity.CUDEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "tables")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Tables {
+public class Tables extends CUDEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +48,7 @@ public class Tables {
     @Column(name = "status")
     private Status status;
 
-    public enum  Status{
+    public enum Status {
         AVAILABLE, //Bàn trống,có thể đặt
         RESERVED, //Đã được đặt trước
         OCCUPIED, //Đang có khách ngồi

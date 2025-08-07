@@ -24,7 +24,6 @@ public class TableControllers {
         dto.setId(table.getId());
         dto.setTable_number(table.getTable_number());
         dto.setCapacity(table.getCapacity());
-
         if (table.getStatus() == Tables.Status.AVAILABLE) {
             dto.setStatus("Bàn đang trống");
         } else if (table.getStatus() == Tables.Status.RESERVED) {
@@ -36,7 +35,6 @@ public class TableControllers {
         } else if (table.getStatus() == Tables.Status.OCCUPIED) {
             dto.setStatus("Bàn đang có khách ngồi");
         }
-
         if (table.getRestaurant() != null){
             dto.setRestaurantName(table.getRestaurant().getName());
         }

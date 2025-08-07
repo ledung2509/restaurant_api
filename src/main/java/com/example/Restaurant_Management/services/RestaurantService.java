@@ -75,12 +75,12 @@ public class RestaurantService {
         return mapToRestaurantResponse(updatedRestaurant);
     }
 
-    public RestaurantResponse delete(int id) {
+    public void delete(int id) {
         Restaurant restaurant = repositories.findById(id)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + id));
-
+                .orElseThrow(() -> new RuntimeException("Restaurant with id not found: " + id));
+        // Set deletedAt to the current time to mark it as deleted
         restaurant.setDeletedAt(LocalDateTime.now());
         repositories.delete(restaurant);
-        return mapToRestaurantResponse(restaurant);
+        mapToRestaurantResponse(restaurant);
     }
 }
