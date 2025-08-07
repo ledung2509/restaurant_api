@@ -3,18 +3,25 @@ package com.example.Restaurant_Management.controllers;
 import com.example.Restaurant_Management.dto.response.UsersResponse;
 import com.example.Restaurant_Management.models.Users;
 import com.example.Restaurant_Management.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    //@Autowired
+    private final UserService service;
 
     @PostMapping("/user/user-info")
     public ResponseEntity<String> userInfo(@RequestHeader("Authorization") String authHeader) {

@@ -6,8 +6,11 @@ import com.example.Restaurant_Management.services.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,27 +35,11 @@ public class RestaurantControllers {
     @GetMapping("/manager/restaurant/list")
     @PreAuthorize("hasRole('MANAGER')")
     public List<RestaurantResponse> getAllRestaurants(){
-
         List<Restaurant> restaurants= service.findAll();
         List<RestaurantResponse> restaurantDTOs = new ArrayList<>();
-        RestaurantResponse dto = new RestaurantResponse();
         for (Restaurant r : restaurants ){
-            dto.setId(r.getId());
-            dto.setName(r.getName());
-            dto.setAddress(r.getAddress());
-            dto.setPhone(r.getPhone());
-            dto.setOpenTime(r.getOpenTime());
-            dto.setCloseTime(r.getCloseTime());
-            dto.setDescription(r.getDescription());
-
-            if (r.getManager() != null) {
-                dto.setManagerFullName(r.getManager().getFullname());
-                // Thêm bất kỳ thông tin nào khác mà bạn muốn từ người quản lý
-            }
-
-            restaurantDTOs.add(dto);
+            restaurantDTOs.add(service.mapToRestaurantResponse(r));
         }
-
         return restaurantDTOs;
     }
 
@@ -65,5 +52,25 @@ public class RestaurantControllers {
     @GetMapping("/guest/restaurant/search")
     public List<RestaurantResponse> searchRestaurantByName(@RequestParam("name") String name){
         return service.searchByName(name);
+    }
+
+    @PostMapping("/manager/restaurant/create")
+    @PreAuthorize("hasRole('MANAGER')")
+    public RestaurantResponse createRestaurant(Restaurant restaurant) {
+        return service.create(restaurant);
+    }
+
+    @PutMapping("/manager/restaurant/update/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public RestaurantResponse updateRestaurant(@PathVariable int id, Restaurant restaurant) {
+        restaurant.setId(id);
+        return service.update(restaurant);
+    }
+
+    @DeleteMapping("/manager/restaurant/delete/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    public String deleteRestaurant(@PathVariable int id) {
+        service.delete(id);
+        return "Restaurant with id: " + id + " has been deleted successfully.";
     }
 }

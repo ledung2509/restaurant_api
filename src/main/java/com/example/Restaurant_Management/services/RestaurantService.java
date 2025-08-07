@@ -6,6 +6,7 @@ import com.example.Restaurant_Management.repositories.RestaurantRepositories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class RestaurantService {
         return repositories.findAll();
     }
 
-    private RestaurantResponse mapToRestaurantResponse(Restaurant restaurant) {
+    public RestaurantResponse mapToRestaurantResponse(Restaurant restaurant) {
         RestaurantResponse response = new RestaurantResponse();
         response.setId(restaurant.getId());
         response.setName(restaurant.getName());
@@ -30,6 +31,8 @@ public class RestaurantService {
         response.setCloseTime(restaurant.getCloseTime());
         response.setDescription(restaurant.getDescription());
         response.setManagerFullName(restaurant.getManager().getFullname());
+        response.setCreatedAt(LocalDateTime.now());
+        response.setUpdatedAt(LocalDateTime.now());
         return response;
     }
 
@@ -48,5 +51,36 @@ public class RestaurantService {
             resp.add(response);
         }
         return resp;
+    }
+
+    public RestaurantResponse create(Restaurant restaurant) {
+        Restaurant savedRestaurant = repositories.save(restaurant);
+        return mapToRestaurantResponse(savedRestaurant);
+    }
+
+    public RestaurantResponse update(Restaurant restaurant) {
+        Restaurant existingRestaurant = repositories.findById(restaurant.getId())
+                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + restaurant.getId()));
+
+        existingRestaurant.setName(restaurant.getName());
+        existingRestaurant.setAddress(restaurant.getAddress());
+        existingRestaurant.setPhone(restaurant.getPhone());
+        existingRestaurant.setOpenTime(restaurant.getOpenTime());
+        existingRestaurant.setCloseTime(restaurant.getCloseTime());
+        existingRestaurant.setDescription(restaurant.getDescription());
+        existingRestaurant.setManager(restaurant.getManager());
+
+        existingRestaurant.setUpdateAt(LocalDateTime.now());
+        Restaurant updatedRestaurant = repositories.save(existingRestaurant);
+        return mapToRestaurantResponse(updatedRestaurant);
+    }
+
+    public RestaurantResponse delete(int id) {
+        Restaurant restaurant = repositories.findById(id)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + id));
+
+        restaurant.setDeletedAt(LocalDateTime.now());
+        repositories.delete(restaurant);
+        return mapToRestaurantResponse(restaurant);
     }
 }

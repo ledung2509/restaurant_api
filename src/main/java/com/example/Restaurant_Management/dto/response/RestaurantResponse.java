@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Data
 @Getter
 @Setter
@@ -15,10 +17,12 @@ public class RestaurantResponse {
 
     private int id;
     private String name;
-    private String address;
     private String phone;
+    private String address;
     private String openTime;
     private String closeTime;
     private String description;
-    private String managerFullName; // Tên người quản lý
+    private String managerFullName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

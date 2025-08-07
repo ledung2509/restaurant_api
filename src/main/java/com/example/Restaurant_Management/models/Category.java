@@ -1,18 +1,27 @@
 package com.example.Restaurant_Management.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import com.example.Restaurant_Management.models.entity.CUDEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Table(name = "category")
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Setter
 @Getter
-public class Category {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Category extends CUDEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

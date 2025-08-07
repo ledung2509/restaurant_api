@@ -6,6 +6,7 @@ import com.example.Restaurant_Management.repositories.CategoryRepositories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepositories repositories;
-
-    //private CategoryResponse response = new CategoryResponse();
 
     public List<CategoryResponse> getAllCategories() {
         List<CategoryResponse> categories = new ArrayList<>();
@@ -41,7 +40,8 @@ public class CategoryService {
 
     public boolean deleteCategory(int id) {
         Category category = repositories.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Category with id not found: " + id));
+        category.setDeletedAt(LocalDateTime.now());
         repositories.delete(category);
         return true;
     }
@@ -54,7 +54,18 @@ public class CategoryService {
         CategoryResponse response = new CategoryResponse();
         response.setId(savedCategory.getId());
         response.setName(savedCategory.getName());
-
+        response.setCreatedAt(LocalDateTime.now());
+        response.setUpdatedAt(LocalDateTime.now());
         return response;
+    }
+
+    public void updateCategory(int id, CategoryResponse categoryResponse) {
+        Category category = repositories.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+        if (category.getName() != null && !category.getName().trim().isEmpty()) {
+            categoryResponse.setName(category.getName());
+        }
+        categoryResponse.setUpdatedAt(LocalDateTime.now());
+        repositories.save(category);
     }
 }
