@@ -5,10 +5,20 @@ services:
     container_name: elasticsearch_dev
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
+      - xpack.monitoring.collection.enabled=true
+      - ELASTIC_PASSWORD=123456
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      -
     ports:
       - "9200:9200"
       - "9300:9300"
+    networks:
+      - elk
   redis:
     image: redis:latest
     container_name: redis_dev
@@ -25,22 +35,31 @@ services:
       - elasticsearch
     environment:
         - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        - ELASTICSEARCH_USERNAME=elastic
+        - ELASTICSEARCH_PASSWORD=123456
+        - xpack.security.enabled=true
     ports:
         - "5601:5601"
-
+    networks:
+      - elk
+      -
   apm-server:
     image: docker.elastic.co/apm/apm-server:8.13.4
     container_name: apm-server
     depends_on:
       - elasticsearch
+      - kibana
     ports:
       - "8200:8200"
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - apm-server.host=0.0.0.0:8200
-    command: >
+    command:
       apm-server -e
         -E output.elasticsearch.hosts=["http://elasticsearch:9200"]
         -E setup.kibana.host=kibana:5601
 volumes:
   redis_data:
+networks:
+  elk:
+    driver: bridge
