@@ -12,8 +12,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      -
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -42,7 +40,6 @@ services:
         - "5601:5601"
     networks:
       - elk
-      -
   apm-server:
     image: docker.elastic.co/apm/apm-server:8.13.4
     container_name: apm-server
