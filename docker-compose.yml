@@ -1,8 +1,9 @@
 version: '3.8'
 services:
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
-    container_name: elasticsearch_dev
+    container_name: elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=true
@@ -17,14 +18,6 @@ services:
       - "9300:9300"
     networks:
       - elk
-  redis:
-    image: redis:latest
-    container_name: redis_dev
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.13.4
@@ -32,14 +25,14 @@ services:
     depends_on:
       - elasticsearch
     environment:
-        - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-        - ELASTICSEARCH_USERNAME=elastic
-        - ELASTICSEARCH_PASSWORD=123456
-        - xpack.security.enabled=true
+      - NODE_OPTIONS=--openssl-legacy-provider=false
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
-        - "5601:5601"
+      - "5601:5601"
     networks:
       - elk
+
   apm-server:
     image: docker.elastic.co/apm/apm-server:8.13.4
     container_name: apm-server
@@ -53,8 +46,17 @@ services:
       - apm-server.host=0.0.0.0:8200
     command:
       apm-server -e
-        -E output.elasticsearch.hosts=["http://elasticsearch:9200"]
-        -E setup.kibana.host=kibana:5601
+      -E output.elasticsearch.hosts=["http://elasticsearch:9200"]
+      -E setup.kibana.host=kibana:5601
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
 volumes:
   redis_data:
 networks:

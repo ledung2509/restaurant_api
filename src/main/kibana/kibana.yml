@@ -1,0 +1,2 @@
+elasticsearch.hosts: ["http://localhost:9200"]
+elasticsearch.serviceAccountToken: "AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTpZZWptbkc2T1NEcUF5OXV0b0pqX1Z3"
